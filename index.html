@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Diwali - Musab Shaikh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes flicker {
+            0%, 100% { transform: scaleY(1) scaleX(1); }
+            25% { transform: scaleY(1.1) scaleX(0.95); }
+            50% { transform: scaleY(0.92) scaleX(1.06); }
+            75% { transform: scaleY(1.08) scaleX(0.96); }
+        }
+        
+        .animate-flicker {
+            animation: flicker 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-200px) scale(0.3) rotate(180deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 2s ease-out forwards;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+        
+        @keyframes firework {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-120px) scale(1.5);
+            }
+            100% {
+                transform: translateY(-150px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const app = document.getElementById('app');
+        let diyasLit = [];
+        let showMessage = false;
+        let buttonPressed = false;
+        let particles = [];
+        let signaturePulse = false;
+
+        const diyaPositions = [
+            { top: '48%', left: '42%' },
+            { top: '48%', left: '58%' },
+            { top: '54%', left: '36%' },
+            { top: '54%', left: '64%' },
+            { top: '42%', left: '50%' },
+            { top: '60%', left: '30%' },
+            { top: '60%', left: '50%' },
+            { top: '60%', left: '70%' },
+            { top: '68%', left: '38%' },
+            { top: '68%', left: '50%' },
+            { top: '68%', left: '62%' },
+            { top: '76%', left: '50%' }
+        ];
+
+        function getBackground() {
+            if (showMessage) {
+                return 'linear-gradient(135deg, #4a0e4e 0%, #81167a 25%, #c71585 50%, #ff1493 75%, #ff69b4 100%)';
+            } else if (diyasLit.length > 6) {
+                return 'linear-gradient(135deg, #1e0a3c 0%, #4a0e4e 50%, #1e0a3c 100%)';
+            } else if (diyasLit.length > 0) {
+                return 'linear-gradient(135deg, #0d0520 0%, #2d1350 50%, #0d0520 100%)';
+            }
+            return 'linear-gradient(135deg, #000000 0%, #1a0033 50%, #000000 100%)';
+        }
+
+        function lightDiyas() {
+            if (buttonPressed) return;
+            buttonPressed = true;
+            
+            const diyaSequence = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+            
+            diyaSequence.forEach((index, i) => {
+                setTimeout(() => {
+                    diyasLit.push(index);
+                    render();
+                    
+                    if (index === 11) {
+                        setTimeout(() => {
+                            showMessage = true;
+                            render();
+                            setTimeout(() => {
+                                signaturePulse = true;
+                                render();
+                                setTimeout(() => {
+                                    signaturePulse = false;
+                                    render();
+                                }, 2000);
+                            }, 1000);
+                        }, 800);
+                    }
+                }, i * 250);
+            });
+
+            // Particle generation
+            setInterval(() => {
+                if (diyasLit.length > 0) {
+                    for (let i = 0; i < 5; i++) {
+                        const particle = document.createElement('div');
+                        const colors = ['#fbbf24', '#f59e0b', '#fb923c', '#f472b6'];
+                        const color = colors[Math.floor(Math.random() * colors.length)];
+                        particle.className = 'absolute rounded-full pointer-events-none';
+                        particle.style.cssText = `
+                            left: ${Math.random() * 100}%;
+                            top: ${Math.random() * 100}%;
+                            width: ${Math.random() * 6 + 2}px;
+                            height: ${Math.random() * 6 + 2}px;
+                            background: radial-gradient(circle, ${color}, transparent);
+                            animation: float ${Math.random() * 4 + 2}s ease-out forwards;
+                            box-shadow: 0 0 15px ${color};
+                        `;
+                        document.querySelector('.particle-container')?.appendChild(particle);
+                        setTimeout(() => particle.remove(), 6000);
+                    }
+                }
+            }, 150);
+        }
+
+        function replay() {
+            diyasLit = [];
+            showMessage = false;
+            buttonPressed = false;
+            signaturePulse = false;
+            render();
+        }
+
+        function render() {
+            app.innerHTML = `
+                <div class="relative w-full h-screen overflow-hidden transition-all duration-2000" style="background: ${getBackground()};">
+                    
+                    ${diyasLit.length > 0 ? `
+                        <div class="absolute inset-0 opacity-30" style="
+                            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.3) 0%, transparent 50%);
+                            animation: pulse 3s ease-in-out infinite;
+                        "></div>
+                    ` : ''}
+
+                    <!-- Enhanced stars -->
+                    <div class="absolute inset-0">
+                        ${[...Array(150)].map((_, i) => {
+                            const colors = ['#ffd700', '#ff69b4', '#00ffff', '#ff1493'];
+                            return `
+                                <div class="absolute rounded-full" style="
+                                    width: ${Math.random() * 3 + 1}px;
+                                    height: ${Math.random() * 3 + 1}px;
+                                    top: ${Math.random() * 100}%;
+                                    left: ${Math.random() * 100}%;
+                                    background: ${diyasLit.length > 0 ? colors[Math.floor(Math.random() * colors.length)] : '#ffffff'};
+                                    opacity: ${Math.random() * 0.8 + 0.2};
+                                    animation: twinkle ${Math.random() * 3 + 2}s ease-in-out infinite;
+                                    animation-delay: ${Math.random() * 3}s;
+                                    box-shadow: ${diyasLit.length > 0 ? '0 0 10px currentColor' : 'none'};
+                                "></div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <!-- Fireworks -->
+                    ${diyasLit.length > 5 ? `
+                        <div class="absolute inset-0">
+                            ${[...Array(8)].map((_, i) => {
+                                const colors = ['#ffd700', '#ff69b4', '#00ffff', '#ff1493', '#7fffd4'];
+                                return `
+                                    <div class="absolute" style="
+                                        left: ${10 + i * 12}%;
+                                        top: ${10 + (i % 3) * 15}%;
+                                        animation: firework ${2 + Math.random()}s ease-out infinite;
+                                        animation-delay: ${i * 0.4}s;
+                                    ">
+                                        <div class="w-3 h-3 rounded-full" style="
+                                            background: ${colors[i % 5]};
+                                            box-shadow: 0 0 20px currentColor;
+                                        "></div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    ` : ''}
+
+                    <!-- Rangoli -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
+                        <svg viewBox="0 0 600 600" class="w-full h-full" style="
+                            filter: ${diyasLit.length > 0 
+                                ? 'drop-shadow(0 0 30px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 50px rgba(255, 105, 180, 0.4))' 
+                                : 'drop-shadow(0 0 10px rgba(100, 100, 100, 0.3))'};
+                            transition: filter 2s ease-out;
+                        ">
+                            ${[...Array(12)].map((_, i) => {
+                                const angle = (i * 30) * (Math.PI / 180);
+                                const x = 300 + Math.cos(angle) * 220;
+                                const y = 300 + Math.sin(angle) * 220;
+                                const colors = ['#ff1493', '#ff69b4', '#ffd700', '#ff8c00'];
+                                return `
+                                    <ellipse
+                                        cx="${x}"
+                                        cy="${y}"
+                                        rx="50"
+                                        ry="90"
+                                        fill="${diyasLit.length > 0 ? colors[i % 4] : 'rgba(80, 80, 80, 0.3)'}"
+                                        fill-opacity="0.5"
+                                        stroke="${diyasLit.length > 0 ? colors[i % 4] : 'rgba(100, 100, 100, 0.6)'}"
+                                        stroke-width="3"
+                                        transform="rotate(${i * 30} ${x} ${y})"
+                                    />
+                                `;
+                            }).join('')}
+                            
+                            <circle cx="300" cy="300" r="200" fill="none" 
+                                stroke="${diyasLit.length > 0 ? '#ff69b4' : 'rgba(100, 100, 100, 0.5)'}" 
+                                stroke-width="4" 
+                                opacity="${diyasLit.length > 0 ? '0.8' : '0.3'}" />
+                            <circle cx="300" cy="300" r="180" fill="none" 
+                                stroke="${diyasLit.length > 0 ? '#ffd700' : 'rgba(120, 120, 120, 0.5)'}" 
+                                stroke-width="3" 
+                                opacity="${diyasLit.length > 0 ? '0.7' : '0.3'}" />
+                            <circle cx="300" cy="300" r="160" fill="none" 
+                                stroke="${diyasLit.length > 0 ? '#00ffff' : 'rgba(140, 140, 140, 0.5)'}" 
+                                stroke-width="2" 
+                                opacity="${diyasLit.length > 0 ? '0.6' : '0.3'}" />
+                            
+                            ${[...Array(8)].map((_, i) => {
+                                const angle = (i * 45) * (Math.PI / 180);
+                                const x = 300 + Math.cos(angle) * 120;
+                                const y = 300 + Math.sin(angle) * 120;
+                                return `
+                                    <ellipse
+                                        cx="${x}"
+                                        cy="${y}"
+                                        rx="35"
+                                        ry="60"
+                                        fill="${diyasLit.length > 0 ? '#ff1493' : 'rgba(100, 100, 100, 0.3)'}"
+                                        fill-opacity="0.6"
+                                        stroke="${diyasLit.length > 0 ? '#ffd700' : 'rgba(120, 120, 120, 0.5)'}"
+                                        stroke-width="2"
+                                        transform="rotate(${i * 45} ${x} ${y})"
+                                    />
+                                `;
+                            }).join('')}
+                            
+                            <circle cx="300" cy="300" r="80" 
+                                fill="${diyasLit.length > 0 ? 'rgba(255, 105, 180, 0.5)' : 'rgba(80, 80, 80, 0.3)'}" 
+                                stroke="${diyasLit.length > 0 ? '#ffd700' : 'rgba(100, 100, 100, 0.5)'}" 
+                                stroke-width="3" />
+                            <circle cx="300" cy="300" r="60" 
+                                fill="${diyasLit.length > 0 ? 'rgba(255, 215, 0, 0.6)' : 'rgba(100, 100, 100, 0.3)'}" 
+                                stroke="${diyasLit.length > 0 ? '#ff69b4' : 'rgba(120, 120, 120, 0.5)'}" 
+                                stroke-width="2" />
+                            
+                            ${[...Array(8)].map((_, i) => {
+                                const angle = (i * 45) * (Math.PI / 180);
+                                return `
+                                    <line
+                                        x1="300"
+                                        y1="300"
+                                        x2="${300 + Math.cos(angle) * 60}"
+                                        y2="${300 + Math.sin(angle) * 60}"
+                                        stroke="${diyasLit.length > 0 ? '#ffd700' : 'rgba(120, 120, 120, 0.4)'}"
+                                        stroke-width="3"
+                                        opacity="${diyasLit.length > 0 ? '0.8' : '0.3'}"
+                                    />
+                                `;
+                            }).join('')}
+                            
+                            <circle cx="300" cy="300" r="30" 
+                                fill="${diyasLit.length > 0 ? 'rgba(255, 20, 147, 0.7)' : 'rgba(60, 60, 60, 0.4)'}" />
+                            <circle cx="300" cy="300" r="15" 
+                                fill="${diyasLit.length > 0 ? 'rgba(255, 215, 0, 0.9)' : 'rgba(80, 80, 80, 0.5)'}" />
+                        </svg>
+                    </div>
+
+                    <!-- Diyas -->
+                    ${diyaPositions.map((pos, index) => `
+                        <div class="absolute transition-all duration-500" style="top: ${pos.top}; left: ${pos.left}; transform: translate(-50%, -50%);">
+                            ${diyasLit.includes(index) ? `
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full" style="
+                                    background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, rgba(255, 140, 0, 0.3) 30%, transparent 70%);
+                                    animation: pulse 2s ease-in-out infinite;
+                                "></div>
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-xl" style="
+                                    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 105, 180, 0.4) 50%, transparent 70%);
+                                "></div>
+                            ` : ''}
+                            
+                            <div class="relative z-10">
+                                <svg width="50" height="30" viewBox="0 0 50 30">
+                                    <ellipse cx="25" cy="20" rx="24" ry="10" fill="url(#diyaGrad${index})" />
+                                    <defs>
+                                        <linearGradient id="diyaGrad${index}" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color: #d97706; stop-opacity: 1;" />
+                                            <stop offset="100%" style="stop-color: #92400e; stop-opacity: 1;" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                
+                                ${diyasLit.includes(index) ? `
+                                    <div class="absolute -top-10 left-1/2 -translate-x-1/2">
+                                        <div class="absolute inset-0 w-10 h-14 rounded-full blur-2xl" style="
+                                            background: radial-gradient(circle, rgba(255, 215, 0, 0.9) 0%, rgba(255, 140, 0, 0.6) 50%, transparent 70%);
+                                        "></div>
+                                        
+                                        <svg width="28" height="40" viewBox="0 0 28 40" class="relative animate-flicker">
+                                            <defs>
+                                                <linearGradient id="flameGrad${index}" x1="50%" y1="0%" x2="50%" y2="100%">
+                                                    <stop offset="0%" style="stop-color: #ffffff; stop-opacity: 1;" />
+                                                    <stop offset="20%" style="stop-color: #fef9c3; stop-opacity: 1;" />
+                                                    <stop offset="50%" style="stop-color: #fbbf24; stop-opacity: 1;" />
+                                                    <stop offset="100%" style="stop-color: #f97316; stop-opacity: 1;" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path
+                                                d="M14 2 Q10 14, 8 24 Q8 32, 14 38 Q20 32, 20 24 Q18 14, 14 2 Z"
+                                                fill="url(#flameGrad${index})"
+                                                filter="drop-shadow(0 0 15px rgba(255, 215, 0, 0.9))"
+                                            />
+                                            <ellipse cx="14" cy="18" rx="5" ry="10" fill="#ffffff" opacity="0.9" />
+                                        </svg>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+
+                    <!-- Particle container -->
+                    <div class="particle-container absolute inset-0 pointer-events-none"></div>
+
+                    <!-- Button or Message -->
+                    <div class="absolute top-[28%] left-1/2 -translate-x-1/2 z-20">
+                        ${!showMessage && !buttonPressed ? `
+                            <button onclick="lightDiyas()" class="relative px-12 py-6 text-gray-900 font-bold text-2xl rounded-full shadow-2xl transform transition-all duration-300 hover:scale-110 active:scale-95 group overflow-hidden" style="
+                                background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #ff8c00 75%, #ffd700 100%);
+                                background-size: 300% 300%;
+                                animation: shimmer 3s ease infinite;
+                                box-shadow: 0 0 60px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 140, 0, 0.6), inset 0 2px 15px rgba(255, 255, 255, 0.5);
+                                font-family: Georgia, serif;
+                            ">
+                                <span class="absolute inset-0 rounded-full bg-white opacity-0 group-active:opacity-40 group-active:animate-ping"></span>
+                                
+                                <span class="relative z-10 flex items-center gap-3">
+                                    <span class="text-3xl" style="animation: bounce 1s ease-in-out infinite;">✨</span>
+                                    Tap to Light the Diyas
+                                    <span class="text-3xl" style="animation: bounce 1s ease-in-out infinite;">✨</span>
+                                </span>
+                            </button>
+                        ` : ''}
+
+                        ${showMessage ? `
+                            <div class="text-center animate-fadeIn">
+                                <h1 class="text-8xl font-bold mb-10" style="
+                                    background: linear-gradient(135deg, #ffd700 0%, #ff69b4 25%, #00ffff 50%, #ff1493 75%, #ffd700 100%);
+                                    background-size: 300% 300%;
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                    background-clip: text;
+                                    animation: shimmer 4s linear infinite;
+                                    filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 60px rgba(255, 105, 180, 0.6));
+                                    font-family: 'Brush Script MT', cursive;
+                                    letter-spacing: 3px;
+                                ">
+                                    ✨ Happy Diwali ✨
+                                </h1>
+                                
+                                <p class="text-3xl mt-8 leading-relaxed max-w-3xl mx-auto font-semibold" style="
+                                    color: #fff;
+                                    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 4px 30px rgba(0, 0, 0, 0.8);
+                                    font-family: Georgia, serif;
+                                ">
+                                    May your life be filled with<br />
+                                    <span class="text-5xl font-bold" style="
+                                        background: linear-gradient(90deg, #ffd700, #ff69b4, #00ffff);
+                                        -webkit-background-clip: text;
+                                        -webkit-text-fill-color: transparent;
+                                        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+                                    ">
+                                        light, love, and prosperity
+                                    </span>
+                                </p>
+
+                                <div class="mt-10 flex justify-center gap-8">
+                                    ${['🪔', '✨', '🎆', '💫', '✨', '🪔'].map((emoji, i) => `
+                                        <span class="text-6xl" style="
+                                            animation: bounce 1s ease-in-out infinite;
+                                            animation-delay: ${i * 0.15}s;
+                                            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+                                        ">
+                                            ${emoji}
+                                        </span>
+                                    `).join('')}
+                                </div>
+
+                                <div class="mt-16 ${signaturePulse ? 'scale-125' : 'scale-100'}" style="
+                                    font-family: 'Brush Script MT', cursive;
+                                    transition: transform 1s ease;
+                                    ${signaturePulse ? 'animation: pulse 2s ease-in-out;' : ''}
+                                ">
+                                    <div class="text-5xl mb-3 font-bold" style="
+                                        background: linear-gradient(90deg, #ffd700, #ff69b4, #ffd700);
+                                        -webkit-background-clip: text;
+                                        -webkit-text-fill-color: transparent;
+                                        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+                                        text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+                                    ">
+                                        Greeted by — <span class="text-6xl">Musab Shaikh</span>
+                                    </div>
+                                    <div class="text-2xl" style="
+                                        color: #ffd700;
+                                        font-family: Georgia, serif;
+                                        font-style: italic;
+                                        text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+                                    ">
+                                        Made with ❤️ by Musab Shaikh
+                                    </div>
+                                </div>
+
+                                <button onclick="replay()" class="mt-12 px-10 py-4 font-bold text-xl rounded-full shadow-2xl transform transition-all duration-300 hover:scale-110" style="
+                                    background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+                                    color: white;
+                                    box-shadow: 0 0 40px rgba(255, 20, 147, 0.8);
+                                    font-family: Georgia, serif;
+                                ">
+                                    ↻ Replay Animation
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Signature at bottom - visible from start -->
+                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-center transition-all duration-1000" style="
+                        font-family: 'Brush Script MT', cursive;
+                        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+                    ">
+                        <div class="text-3xl mb-1" style="
+                            ${diyasLit.length > 0 
+                                ? 'background: linear-gradient(90deg, #ffd700, #ff69b4, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));'
+                                : 'color: #888; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);'
+                            }
+                        ">
+                            Greeted by — <span class="font-bold text-4xl">Musab Shaikh</span>
+                        </div>
+                        <div class="text-lg" style="
+                            ${diyasLit.length > 0 ? 'color: #ffd700;' : 'color: #666;'}
+                            font-family: Georgia, serif;
+                            font-style: italic;
+                            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+                        ">
+                            Made with ❤️ by Musab Shaikh
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        render();
+    </script>
+</body>
+</html>
