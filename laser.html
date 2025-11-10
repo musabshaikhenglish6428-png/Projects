@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laser Voice Communication - Talk Through Light</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #8b5cf6;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #8b5cf6;
+            text-shadow: 0 0 20px #8b5cf6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #8b5cf6;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8b5cf6;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 100px 50px 50px;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px #8b5cf6); }
+            50% { filter: drop-shadow(0 0 40px #ec4899); }
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin: 40px 0 20px;
+            color: #8b5cf6;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        #home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .laser-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .tagline {
+            font-size: 1.5em;
+            color: #ec4899;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .description {
+            max-width: 800px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .cta-btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.8);
+        }
+
+        .block-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .block {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #8b5cf6;
+            text-align: center;
+            min-width: 150px;
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .block:nth-child(2) { animation-delay: 0.5s; }
+        .block:nth-child(3) { animation-delay: 1s; }
+        .block:nth-child(4) { animation-delay: 1.5s; }
+        .block:nth-child(5) { animation-delay: 2s; }
+
+        .block:hover {
+            transform: scale(1.1) translateY(-10px);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .block-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #ec4899;
+        }
+
+        #canvasContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px auto;
+            border: 3px solid #8b5cf6;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
+            background: #000;
+            max-width: 100%;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .app-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .app-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .app-card h3 {
+            color: #ec4899;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .question {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #8b5cf6;
+        }
+
+        .question h3 {
+            color: #ec4899;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 15px;
+            background: rgba(236, 72, 153, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #8b5cf6;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            border-color: #ec4899;
+            background: rgba(236, 72, 153, 0.2);
+        }
+
+        .option.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .option.wrong {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .submit-btn {
+            padding: 15px 50px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 2em;
+            color: #8b5cf6;
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 15px;
+            display: none;
+        }
+
+        .fun-fact {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #ec4899;
+            margin: 40px 0;
+        }
+
+        .fun-fact h3 {
+            color: #ec4899;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .control-panel {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .control-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Team Section */
+        .team-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            padding: 60px 0;
+            margin-top: 80px;
+            border-radius: 20px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .team-card {
+            background: rgba(10, 10, 15, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #8b5cf6;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .team-card:hover::before {
+            left: 100%;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4);
+            border-color: #ec4899;
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            margin: 0 auto 20px;
+            border: 4px solid #ec4899;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
+        }
+
+        .team-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: #ec4899;
+            margin-bottom: 10px;
+        }
+
+        .team-roll {
+            color: #8b5cf6;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .team-role {
+            color: #ccc;
+            font-size: 1em;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a0a2e, #2d1b3d);
+            padding: 30px 50px;
+            text-align: center;
+            border-top: 2px solid #8b5cf6;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-team {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-member {
+            color: #ccc;
+            font-size: 0.95em;
+        }
+
+        .footer-member strong {
+            color: #ec4899;
+            font-weight: 600;
+        }
+
+        .footer-divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            margin: 20px auto;
+        }
+
+        .footer-text {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .footer-year {
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 0.9em;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            section {
+                padding: 80px 20px 30px;
+            }
+
+            .block-diagram {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">LASER VOICE</div>
+        <ul class="nav-links">
+            <li><a onclick="showSection('home')">Home</a></li>
+            <li><a onclick="showSection('principle')">Principle</a></li>
+            <li><a onclick="showSection('working')">Working</a></li>
+            <li><a onclick="showSection('applications')">Applications</a></li>
+            <li><a onclick="showSection('quiz')">Quiz</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="active">
+        <canvas class="laser-bg"></canvas>
+        <div class="container">
+            <h1>LASER VOICE COMMUNICATION</h1>
+            <p class="tagline">Talk Through Light</p>
+            <p class="description">
+                Experience the revolutionary technology that transforms sound waves into light beams, 
+                enabling communication through laser intensity modulation. Discover how voice can travel 
+                at the speed of light using cutting-edge optical technology.
+            </p>
+            <button class="cta-btn" onclick="showSection('principle')">Explore the Science →</button>
+        </div>
+    </section>
+
+    <section id="principle">
+        <div class="container">
+            <h1>Physics Principles</h1>
+            
+            <h2>🔬 Core Concepts</h2>
+            
+            <p>Laser voice communication operates on three fundamental physics principles:</p>
+
+            <div class="fun-fact">
+                <h3>1. Intensity Modulation of Light</h3>
+                <p>
+                    The amplitude (intensity) of the laser beam is modulated in accordance with the audio signal. 
+                    When you speak into the microphone, the sound waves create electrical signals that control 
+                    the laser's brightness. The laser beam "pulses" at frequencies matching your voice.
+                </p>
+                <p style="text-align: center; margin-top: 20px;">
+                    \[ I(t) = I_0 [1 + m \cdot s(t)] \]
+                </p>
+                <p style="text-align: center; color: #ec4899;">
+                    where \(I(t)\) is instantaneous intensity, \(I_0\) is carrier intensity, 
+                    \(m\) is modulation index, and \(s(t)\) is the audio signal
+                </p>
+            </div>
+
+            <div class="fun-fact">
+                <h3>2. Photoelectric Effect</h3>
+                <p>
+                    At the receiver, a photodiode converts the modulated light back into electrical signals 
+                    using the photoelectric effect. When photons strike the photodiode's surface, they release 
+                    electrons, creating a current proportional to the light intensity.
+                </p>
+                <p style="text-align: center; margin-top: 20px;">
+                    \[ I_{photo} = R \cdot P_{optical} \]
+                </p>
+                <p style="text-align: center; color: #ec4899;">
+                    where \(I_{photo}\) is photocurrent, \(R\) is responsivity, and \(P_{optical}\) is optical power
+                </p>
+            </div>
+
+            <div class="fun-fact">
+                <h3>3. Signal Conversion Chain</h3>
+                <p>The complete communication involves three conversions:</p>
+                <ul style="margin-left: 30px; line-height: 2;">
+                    <li><strong>Acoustic → Electrical:</strong> Microphone converts sound waves to electrical signals</li>
+                    <li><strong>Electrical → Optical:</strong> Laser driver modulates light intensity</li>
+                    <li><strong>Optical → Electrical:</strong> Photodiode converts light back to electrical current</li>
+                    <li><strong>Electrical → Acoustic:</strong> Speaker reproduces the original sound</li>
+                </ul>
+            </div>
+
+            <h2>📊 Block Diagram</h2>
+            
+            <div class="block-diagram">
+                <div class="block">
+                    <div class="block-icon">🎤</div>
+                    <h3>Microphone</h3>
+                    <p>Converts sound to electrical signal</p>
+                </div>
+                <div class="arrow">→</div>
+                <div class="block">
+                    <div class="block-icon">📈</div>
+                    <h3>Amplifier</h3>
+                    <p>Boosts signal strength</p>
+                </div>
+                <div class="arrow">→</div>
+                <div class="block">
+                    <div class="block-icon">🔴</div>
+                    <h3>Laser Transmitter</h3>
+                    <p>Modulates light intensity</p>
+                </div>
+                <div class="arrow">→</div>
+                <div class="block">
+                    <div class="block-icon">📡</div>
+                    <h3>Photodiode</h3>
+                    <p>Detects light variations</p>
+                </div>
+                <div class="arrow">→</div>
+                <div class="block">
+                    <div class="block-icon">🔊</div>
+                    <h3>Speaker</h3>
+                    <p>Reproduces sound</p>
+                </div>
+            </div>
+
+            <div class="fun-fact">
+                <h3>💡 Did You Know?</h3>
+                <p>
+                    <strong>NASA's Laser Communications Relay Demonstration (LCRD)</strong> can transmit data 
+                    <span style="color: #ec4899; font-weight: bold;">10-100x faster than radio frequencies</span>, 
+                    achieving data rates of up to 1.2 Gbps in space!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="working">
+        <div class="container">
+            <h1>Interactive Visualization</h1>
+            
+            <p style="text-align: center; font-size: 1.3em; margin-bottom: 30px;">
+                Watch how sound waves modulate laser light in real-time!
+            </p>
+
+            <div id="canvasContainer">
+                <canvas id="visualCanvas" width="800" height="400"></canvas>
+            </div>
+
+            <div class="control-panel">
+                <button class="control-btn" id="transmitBtn" onclick="startTransmission()">
+                    🚀 Start Transmission
+                </button>
+                <button class="control-btn" id="stopBtn" onclick="stopTransmission()" disabled>
+                    ⏹️ Stop
+                </button>
+            </div>
+
+            <div class="fun-fact">
+                <h3>How It Works:</h3>
+                <ul style="margin-left: 30px; line-height: 2;">
+                    <li><strong>Blue Waveform:</strong> Your voice signal (audio input)</li>
+                    <li><strong>Red Laser Beam:</strong> Intensity varies with the audio signal</li>
+                    <li><strong>Pulsing Effect:</strong> Represents amplitude modulation</li>
+                    <li><strong>Green Glow at Receiver:</strong> Photodiode detecting light</li>
+                </ul>
+            </div>
+
+            <div class="fun-fact">
+                <h3>💡 Historical Fact</h3>
+                <p>
+                    <strong>Optical communication was first tested in 1880</strong> by Alexander Graham Bell with 
+                    his "Photophone" - over 100 years before fiber optics became mainstream!
+                </p>
+            </div>
+
+            <!-- Team Section -->
+            <div class="team-section">
+                <h2 style="text-align: center;">👥 Project Team</h2>
+                <p style="text-align: center; margin-bottom: 30px;">
+                    This project was developed by FY CSE students
+                </p>
+                
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar">👨‍💻</div>
+                        <div class="team-name">Musab Shaikh</div>
+                        <div class="team-roll">Roll No: 2503158</div>
+                        <div class="team-role">Developer & Researcher</div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">👨‍🔬</div>
+                        <div class="team-name">Tanmay Sindhani</div>
+                        <div class="team-roll">Roll No: 2503168</div>
+                        <div class="team-role">Developer & Researcher</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="applications">
+        <div class="container">
+            <h1>Real-World Applications</h1>
+
+            <p style="text-align: center; font-size: 1.3em; margin-bottom: 50px;">
+                Laser communication technology powers critical systems across multiple industries
+            </p>
+
+            <div class="app-grid">
+                <div class="app-card">
+                    <div class="app-icon">🌐</div>
+                    <h3>Fiber-Optic Internet</h3>
+                    <p>
+                        The backbone of modern internet infrastructure. Laser light pulses through glass fibers 
+                        carry data at speeds exceeding 100 Gbps over thousands of kilometers.
+                    </p>
+                </div>
+
+                <div class="app-card">
+                    <div class="app-icon">🛰️</div>
+                    <h3>Satellite Communication</h3>
+                    <p>
+                        Space agencies use laser communication for deep-space missions. NASA's LCRD transmits 
+                        terabytes of data from satellites to Earth at 10-100x faster speeds than radio.
+                    </p>
+                </div>
+
+                <div class="app-card">
+                    <div class="app-icon">🌊</div>
+                    <h3>Underwater Communication</h3>
+                    <p>
+                        Blue-green lasers penetrate water more effectively than radio waves, enabling 
+                        submarine communication and oceanographic research.
+                    </p>
+                </div>
+
+                <div class="app-card">
+                    <div class="app-icon">🔒</div>
+                    <h3>Secure Data Transmission</h3>
+                    <p>
+                        Line-of-sight laser communication is inherently secure. Used in military applications 
+                        and government communications where security is paramount.
+                    </p>
+                </div>
+
+                <div class="app-card">
+                    <div class="app-icon">🏥</div>
+                    <h3>Medical Equipment</h3>
+                    <p>
+                        Optical communication in medical devices enables high-speed, interference-free data 
+                        transmission in MRI and operating room environments.
+                    </p>
+                </div>
+
+                <div class="app-card">
+                    <div class="app-icon">🏢</div>
+                    <h3>Building-to-Building Links</h3>
+                    <p>
+                        Free-space optical communication provides high-bandwidth connections between 
+                        buildings without cables in urban areas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="fun-fact">
+                <h3>💡 Amazing Fact</h3>
+                <p>
+                    In 2013, NASA's LLCD achieved <span style="color: #ec4899; font-weight: bold;">622 Mbps from the Moon</span> - 
+                    faster than most home internet at the time!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz">
+        <div class="container">
+            <h1>Test Your Knowledge</h1>
+
+            <div class="quiz-container">
+                <div class="question">
+                    <h3>Question 1:</h3>
+                    <p>What converts light intensity to electrical current?</p>
+                    <div class="options">
+                        <div class="option" data-q="1" data-a="0">A) Microphone</div>
+                        <div class="option" data-q="1" data-a="1">B) Photodiode</div>
+                        <div class="option" data-q="1" data-a="2">C) Amplifier</div>
+                        <div class="option" data-q="1" data-a="3">D) Laser diode</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Question 2:</h3>
+                    <p>What principle allows sound to modulate laser light?</p>
+                    <div class="options">
+                        <div class="option" data-q="2" data-a="0">A) Doppler Effect</div>
+                        <div class="option" data-q="2" data-a="1">B) Intensity Modulation</div>
+                        <div class="option" data-q="2" data-a="2">C) Refraction</div>
+                        <div class="option" data-q="2" data-a="3">D) Diffraction</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Question 3:</h3>
+                    <p>Which application uses laser for internet infrastructure?</p>
+                    <div class="options">
+                        <div class="option" data-q="3" data-a="0">A) Bluetooth</div>
+                        <div class="option" data-q="3" data-a="1">B) Wi-Fi</div>
+                        <div class="option" data-q="3" data-a="2">C) Fiber-optic communication</div>
+                        <div class="option" data-q="3" data-a="3">D) Radio waves</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Question 4:</h3>
+                    <p>What phenomenon enables photodiodes to work?</p>
+                    <div class="options">
+                        <div class="option" data-q="4" data-a="0">A) Photoelectric Effect</div>
+                        <div class="option" data-q="4" data-a="1">B) Compton Effect</div>
+                        <div class="option" data-q="4" data-a="2">C) Zeeman Effect</div>
+                        <div class="option" data-q="4" data-a="3">D) Hall Effect</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>Question 5:</h3>
+                    <p>Why is laser communication more secure?</p>
+                    <div class="options">
+                        <div class="option" data-q="5" data-a="0">A) It's cheaper</div>
+                        <div class="option" data-q="5" data-a="1">B) Requires line-of-sight, hard to intercept</div>
+                        <div class="option" data-q="5" data-a="2">C) Uses less power</div>
+                        <div class="option" data-q="5" data-a="3">D) It's slower</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+                </div>
+
+                <div class="score-display" id="scoreDisplay"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Background animation
+        const bgCanvas = document.querySelector('.laser-bg');
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+
+        class LaserBeam {
+            constructor() {
+                this.x = 0;
+                this.y = Math.random() * bgCanvas.height;
+                this.speed = 2 + Math.random() * 3;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.x += this.speed;
+                if (this.x > bgCanvas.width) {
+                    this.x = 0;
+                    this.y = Math.random() * bgCanvas.height;
+                }
+            }
+
+            draw() {
+                bgCtx.strokeStyle = `rgba(139, 92, 246, ${this.opacity})`;
+                bgCtx.lineWidth = 2;
+                bgCtx.beginPath();
+                bgCtx.moveTo(this.x, this.y);
+                bgCtx.lineTo(this.x + 100, this.y);
+                bgCtx.stroke();
+
+                bgCtx.fillStyle = `rgba(236, 72, 153, ${this.opacity})`;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                bgCtx.fill();
+            }
+        }
+
+        const beams = [];
+        for (let i = 0; i < 20; i++) {
+            beams.push(new LaserBeam());
+        }
+
+        function animateBackground() {
+            bgCtx.fillStyle = 'rgba(10, 10, 15, 0.1)';
+            bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+            beams.forEach(beam => {
+                beam.update();
+                beam.draw();
+            });
+
+            requestAnimationFrame(animateBackground);
+        }
+
+        animateBackground();
+
+        // Section navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Visualization
+        const canvas = document.getElementById('visualCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        let time = 0;
+        let isTransmitting = false;
+
+        function drawVisualization() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Transmitter
+            ctx.fillStyle = '#8b5cf6';
+            ctx.fillRect(50, 150, 60, 100);
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Poppins';
+            ctx.textAlign = 'center';
+            ctx.fillText('Transmitter', 80, 270);
+
+            // Receiver
+            ctx.fillStyle = '#8b5cf6';
+            ctx.fillRect(690, 150, 60, 100);
+            ctx.fillText('Receiver', 720, 270);
+
+            if (isTransmitting) {
+                // Sound wave
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x < 200; x++) {
+                    const y = 100 + Math.sin((x + time) * 0.1) * 30;
+                    ctx.lineTo(50 + x, y);
+                }
+                ctx.stroke();
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('Audio Signal', 150, 90);
+
+                // Laser beam with modulation
+                const intensity = Math.abs(Math.sin(time * 0.05));
+                ctx.strokeStyle = `rgba(239, 68, 68, ${0.5 + intensity * 0.5})`;
+                ctx.lineWidth = 4 + intensity * 4;
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#ef4444';
+                
+                ctx.beginPath();
+                ctx.moveTo(110, 200);
+                
+                for (let x = 110; x < 690; x += 10) {
+                    const offset = Math.sin((x + time * 2) * 0.05) * 5;
+                    ctx.lineTo(x, 200 + offset);
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#ef4444';
+                ctx.fillText('Modulated Laser Beam', 400, 180);
+
+                // Receiver glow
+                const glowIntensity = 0.5 + intensity * 0.5;
+                ctx.fillStyle = `rgba(16, 185, 129, ${glowIntensity})`;
+                ctx.beginPath();
+                ctx.arc(720, 200, 30 + intensity * 20, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#10b981';
+                ctx.fillText('Photodiode Active', 720, 290);
+
+                time += 1;
+            } else {
+                // Static beam when not transmitting
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(110, 200);
+                ctx.lineTo(690, 200);
+                ctx.stroke();
+            }
+
+            if (isTransmitting) {
+                animationId = requestAnimationFrame(drawVisualization);
+            }
+        }
+
+        function startTransmission() {
+            isTransmitting = true;
+            document.getElementById('transmitBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            drawVisualization();
+        }
+
+        function stopTransmission() {
+            isTransmitting = false;
+            document.getElementById('transmitBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            drawVisualization();
+        }
+
+        // Initial draw
+        drawVisualization();
+
+        // Quiz functionality
+        const answers = {
+            1: 1, // Photodiode
+            2: 1, // Intensity Modulation
+            3: 2, // Fiber-optic
+            4: 0, // Photoelectric Effect
+            5: 1  // Line-of-sight
+        };
+
+        const userAnswers = {};
+
+        // Add click handlers to options
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.getAttribute('data-q');
+                const answer = this.getAttribute('data-a');
+                
+                // Remove selected class from siblings
+                this.parentElement.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Store answer
+                userAnswers[question] = parseInt(answer);
+            });
+        });
+
+        function submitQuiz() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+
+            // Check answers
+            for (let q in answers) {
+                const correctAnswer = answers[q];
+                const userAnswer = userAnswers[q];
+                
+                const options = document.querySelectorAll(`[data-q="${q}"]`);
+                
+                options.forEach(option => {
+                    const answerIndex = parseInt(option.getAttribute('data-a'));
+                    
+                    if (answerIndex === correctAnswer) {
+                        option.classList.add('correct');
+                    }
+                    
+                    if (userAnswer !== undefined && answerIndex === userAnswer && answerIndex !== correctAnswer) {
+                        option.classList.add('wrong');
+                    }
+                });
+
+                if (userAnswer === correctAnswer) {
+                    score++;
+                }
+            }
+
+            // Display score
+            const percentage = (score / total) * 100;
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            
+            let message = '';
+            let color = '';
+            
+            if (percentage >= 80) {
+                message = 'Excellent! 🌟';
+                color = '#10b981';
+            } else if (percentage >= 60) {
+                message = 'Good Job! 👍';
+                color = '#3b82f6';
+            } else {
+                message = 'Keep Learning! 📚';
+                color = '#ef4444';
+            }
+
+            scoreDisplay.innerHTML = `
+                <h2 style="color: ${color};">${message}</h2>
+                <p>You scored <span style="color: #ec4899; font-size: 1.5em;">${score}/${total}</span></p>
+                <p>${percentage.toFixed(0)}% Correct</p>
+            `;
+            scoreDisplay.style.display = 'block';
+
+            // Disable submit button
+            document.querySelector('.submit-btn').disabled = true;
+            document.querySelector('.submit-btn').style.opacity = '0.5';
+        }
+
+        // Responsive canvas
+        window.addEventListener('resize', () => {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            
+            const container = document.getElementById('canvasContainer');
+            const maxWidth = container.clientWidth - 40;
+            if (window.innerWidth < 768) {
+                canvas.width = maxWidth;
+                canvas.height = 300;
+            }
+        });
+
+        // GSAP animations on section change
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from('#home h1', {
+                duration: 1,
+                y: -50,
+                opacity: 0,
+                ease: 'bounce'
+            });
+
+            gsap.from('#home .tagline', {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                delay: 0.3
+            });
+
+            gsap.from('#home .description', {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                delay: 0.6
+            });
+
+            gsap.from('#home .cta-btn', {
+                duration: 1,
+                scale: 0,
+                opacity: 0,
+                delay: 0.9,
+                ease: 'back'
+            });
+        });
+    </script>
+
+    <!-- Footer on all pages -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-team">
+                <div class="footer-member">
+                    <strong>Musab Shaikh</strong> | Roll No: 2503158
+                </div>
+                <div class="footer-member">
+                    <strong>Tanmay Sindhani</strong> | Roll No: 2503168
+                </div>
+            </div>
+            
+            <div class="footer-divider"></div>
+            
+            <p class="footer-text">
+                Laser Voice Communication System | FY CSE Project<br>
+                <span class="footer-year">© 2025</span> | Mumbai University
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
