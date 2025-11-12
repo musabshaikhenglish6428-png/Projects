@@ -80,7 +80,7 @@
 
         section {
             min-height: 100vh;
-            padding: 100px 50px 50px;
+            padding: 100px 50px 100px;
             display: none;
         }
 
@@ -91,6 +91,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 30px;
         }
 
         h1 {
@@ -102,6 +103,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: glow 2s ease-in-out infinite;
+            text-align: center;
         }
 
         @keyframes glow {
@@ -114,6 +116,7 @@
             font-size: 2.5em;
             margin: 40px 0 20px;
             color: #8b5cf6;
+            text-align: center;
         }
 
         p {
@@ -121,6 +124,7 @@
             line-height: 1.8;
             margin-bottom: 20px;
             color: #ccc;
+            padding: 0 20px;
         }
 
         #home {
@@ -154,8 +158,11 @@
             font-size: 1.3em;
             line-height: 1.8;
             margin-bottom: 40px;
+            display: flex;
         }
-
+        .description1 {
+            font-size: 1.5em;
+        }
         .cta-btn {
             padding: 15px 40px;
             font-size: 1.2em;
@@ -214,6 +221,15 @@
             margin-bottom: 10px;
         }
 
+        .block h3 {
+            margin-bottom: 10px;
+            color: #ec4899;
+        }
+
+        .block p {
+            padding: 0;
+        }
+
         .arrow {
             font-size: 2em;
             color: #ec4899;
@@ -265,6 +281,10 @@
             font-size: 1.5em;
         }
 
+        .app-card p {
+            padding: 0;
+        }
+
         .quiz-container {
             max-width: 800px;
             margin: 50px auto;
@@ -281,6 +301,12 @@
         .question h3 {
             color: #ec4899;
             margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .question p {
+            padding: 0;
+            text-align: left;
         }
 
         .options {
@@ -296,25 +322,29 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            outline: none;
         }
 
         .option:hover {
-            border-color: #8b5cf6;
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
             transform: translateX(10px);
         }
 
+        .option:focus,
         .option.selected {
-            border-color: #ec4899;
-            background: rgba(236, 72, 153, 0.2);
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
         }
 
         .option.correct {
-            border-color: #10b981;
+            border-color: #10b981 !important;
             background: rgba(16, 185, 129, 0.2);
         }
 
         .option.wrong {
-            border-color: #ef4444;
+            border-color: #ef4444 !important;
             background: rgba(239, 68, 68, 0.2);
         }
 
@@ -358,6 +388,16 @@
             color: #ec4899;
             margin-bottom: 15px;
             font-size: 1.5em;
+            text-align: left;
+        }
+
+        .fun-fact p {
+            padding: 0;
+        }
+
+        .fun-fact ul {
+            margin-left: 30px;
+            line-height: 2;
         }
 
         .control-panel {
@@ -389,27 +429,21 @@
         }
 
         /* Team Section */
-        .team-section {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            padding: 60px 0;
-            margin-top: 80px;
-            border-radius: 20px;
-        }
-
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
-            margin-top: 40px;
+            margin: 50px 0;
+            padding: 0 20px;
         }
 
         .team-card {
-            background: rgba(10, 10, 15, 0.6);
-            padding: 40px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            padding: 40px 30px;
             border-radius: 20px;
-            border: 2px solid #8b5cf6;
+            border: 2px solid transparent;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.4s;
             position: relative;
             overflow: hidden;
         }
@@ -421,8 +455,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+            transition: left 0.6s;
         }
 
         .team-card:hover::before {
@@ -430,91 +464,100 @@
         }
 
         .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4);
-            border-color: #ec4899;
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.5);
+            border-color: #8b5cf6;
         }
 
         .team-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8b5cf6, #ec4899);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: 2.5em;
             margin: 0 auto 20px;
-            border: 4px solid #ec4899;
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
+            border: 3px solid #ec4899;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+            transition: all 0.3s;
+        }
+
+        .team-card:hover .team-avatar {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 0 50px rgba(236, 72, 153, 0.8);
         }
 
         .team-name {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
-            color: #ec4899;
-            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
         }
 
         .team-roll {
             color: #8b5cf6;
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .team-role {
-            color: #ccc;
-            font-size: 1em;
+            color: #ec4899;
+            font-size: 0.95em;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .lead-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            border-radius: 15px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(236, 72, 153, 0.4);
         }
 
         /* Footer */
         footer {
-            background: linear-gradient(135deg, #1a0a2e, #2d1b3d);
-            padding: 30px 50px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
             text-align: center;
             border-top: 2px solid #8b5cf6;
-            margin-top: 50px;
+            z-index: 999;
+            box-shadow: 0 -5px 20px rgba(139, 92, 246, 0.2);
         }
 
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-team {
             display: flex;
             justify-content: center;
-            gap: 50px;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
         .footer-member {
             color: #ccc;
-            font-size: 0.95em;
+            font-size: 0.8em;
         }
 
         .footer-member strong {
-            color: #ec4899;
+            color: #8b5cf6;
             font-weight: 600;
         }
 
         .footer-divider {
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
-            margin: 20px auto;
-        }
-
-        .footer-text {
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        .footer-year {
-            color: #8b5cf6;
-            font-weight: 600;
+            width: 2px;
+            height: 15px;
+            background: #8b5cf6;
         }
 
         @media (max-width: 768px) {
@@ -527,18 +570,45 @@
             .nav-links {
                 gap: 15px;
                 font-size: 0.9em;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             h1 {
                 font-size: 2.5em;
             }
 
+            h2 {
+                font-size: 2em;
+            }
+
             section {
-                padding: 80px 20px 30px;
+                padding: 80px 20px 100px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            p {
+                padding: 0 10px;
             }
 
             .block-diagram {
                 flex-direction: column;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-divider {
+                display: none;
             }
         }
     </style>
@@ -547,11 +617,12 @@
     <nav>
         <div class="logo">LASER VOICE</div>
         <ul class="nav-links">
-            <li><a onclick="showSection('home')">Home</a></li>
-            <li><a onclick="showSection('principle')">Principle</a></li>
-            <li><a onclick="showSection('working')">Working</a></li>
-            <li><a onclick="showSection('applications')">Applications</a></li>
-            <li><a onclick="showSection('quiz')">Quiz</a></li>
+            <li><a href="#" data-section="home">Home</a></li>
+            <li><a href="#" data-section="principle">Principle</a></li>
+            <li><a href="#" data-section="working">Working</a></li>
+            <li><a href="#" data-section="applications">Applications</a></li>
+            <li><a href="#" data-section="team">Team</a></li>
+            <li><a href="#" data-section="quiz">Quiz</a></li>
         </ul>
     </nav>
 
@@ -560,12 +631,11 @@
         <div class="container">
             <h1>LASER VOICE COMMUNICATION</h1>
             <p class="tagline">Talk Through Light</p>
-            <p class="description">
-                Experience the revolutionary technology that transforms sound waves into light beams, 
+            <p class="description"><div class="description1">Experience the revolutionary technology that transforms sound waves into light beams, 
                 enabling communication through laser intensity modulation. Discover how voice can travel 
-                at the speed of light using cutting-edge optical technology.
+                at the speed of light using cutting-edge optical technology.</div>
             </p>
-            <button class="cta-btn" onclick="showSection('principle')">Explore the Science →</button>
+            <button class="cta-btn" data-section="principle">Explore the Science →</button>
         </div>
     </section>
 
@@ -575,7 +645,7 @@
             
             <h2>🔬 Core Concepts</h2>
             
-            <p>Laser voice communication operates on three fundamental physics principles:</p>
+            <p style="text-align: center;">Laser voice communication operates on three fundamental physics principles:</p>
 
             <div class="fun-fact">
                 <h3>1. Intensity Modulation of Light</h3>
@@ -611,7 +681,7 @@
             <div class="fun-fact">
                 <h3>3. Signal Conversion Chain</h3>
                 <p>The complete communication involves three conversions:</p>
-                <ul style="margin-left: 30px; line-height: 2;">
+                <ul>
                     <li><strong>Acoustic → Electrical:</strong> Microphone converts sound waves to electrical signals</li>
                     <li><strong>Electrical → Optical:</strong> Laser driver modulates light intensity</li>
                     <li><strong>Optical → Electrical:</strong> Photodiode converts light back to electrical current</li>
@@ -677,17 +747,17 @@
             </div>
 
             <div class="control-panel">
-                <button class="control-btn" id="transmitBtn" onclick="startTransmission()">
+                <button class="control-btn" id="transmitBtn">
                     🚀 Start Transmission
                 </button>
-                <button class="control-btn" id="stopBtn" onclick="stopTransmission()" disabled>
+                <button class="control-btn" id="stopBtn" disabled>
                     ⏹️ Stop
                 </button>
             </div>
 
             <div class="fun-fact">
                 <h3>How It Works:</h3>
-                <ul style="margin-left: 30px; line-height: 2;">
+                <ul>
                     <li><strong>Blue Waveform:</strong> Your voice signal (audio input)</li>
                     <li><strong>Red Laser Beam:</strong> Intensity varies with the audio signal</li>
                     <li><strong>Pulsing Effect:</strong> Represents amplitude modulation</li>
@@ -701,30 +771,6 @@
                     <strong>Optical communication was first tested in 1880</strong> by Alexander Graham Bell with 
                     his "Photophone" - over 100 years before fiber optics became mainstream!
                 </p>
-            </div>
-
-            <!-- Team Section -->
-            <div class="team-section">
-                <h2 style="text-align: center;">👥 Project Team</h2>
-                <p style="text-align: center; margin-bottom: 30px;">
-                    This project was developed by FY CSE students
-                </p>
-                
-                <div class="team-grid">
-                    <div class="team-card">
-                        <div class="team-avatar">👨‍💻</div>
-                        <div class="team-name">Musab Shaikh</div>
-                        <div class="team-roll">Roll No: 2503158</div>
-                        <div class="team-role">Developer & Researcher</div>
-                    </div>
-
-                    <div class="team-card">
-                        <div class="team-avatar">👨‍🔬</div>
-                        <div class="team-name">Tanmay Sindhani</div>
-                        <div class="team-roll">Roll No: 2503168</div>
-                        <div class="team-role">Developer & Researcher</div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -803,6 +849,47 @@
         </div>
     </section>
 
+    <section id="team">
+        <div class="container">
+            <h1>Team Members</h1>
+            
+            <p style="text-align: center; font-size: 1.3em; margin-bottom: 50px; color: #ec4899;">
+                Meet the brilliant minds behind this innovative project
+            </p>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">👨‍🔬</div>
+                    <div class="team-name">Musab Shaikh</div>
+                    <div class="team-roll">Roll No: 58</div>
+                    <div class="team-role">Lead Member</div>
+                    <div class="lead-badge">Project Lead</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">👩‍🔬</div>
+                    <div class="team-name">Shifa Shaikh</div>
+                    <div class="team-roll">Roll No: 59</div>
+                    <div class="team-role">Experimental Incharge</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">👨‍💻</div>
+                    <div class="team-name">Asad Shaikh</div>
+                    <div class="team-roll">Roll No: 57</div>
+                    <div class="team-role">Thesis Writer</div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">🔬</div>
+                    <div class="team-name">Tanmay Sindhani</div>
+                    <div class="team-roll">Roll No: 68</div>
+                    <div class="team-role">Researcher</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="quiz">
         <div class="container">
             <h1>Test Your Knowledge</h1>
@@ -812,10 +899,10 @@
                     <h3>Question 1:</h3>
                     <p>What converts light intensity to electrical current?</p>
                     <div class="options">
-                        <div class="option" data-q="1" data-a="0">A) Microphone</div>
-                        <div class="option" data-q="1" data-a="1">B) Photodiode</div>
-                        <div class="option" data-q="1" data-a="2">C) Amplifier</div>
-                        <div class="option" data-q="1" data-a="3">D) Laser diode</div>
+                        <div class="option" data-q="1" data-a="0" tabindex="0">A) Microphone</div>
+                        <div class="option" data-q="1" data-a="1" tabindex="0">B) Photodiode</div>
+                        <div class="option" data-q="1" data-a="2" tabindex="0">C) Amplifier</div>
+                        <div class="option" data-q="1" data-a="3" tabindex="0">D) Laser diode</div>
                     </div>
                 </div>
 
@@ -823,10 +910,10 @@
                     <h3>Question 2:</h3>
                     <p>What principle allows sound to modulate laser light?</p>
                     <div class="options">
-                        <div class="option" data-q="2" data-a="0">A) Doppler Effect</div>
-                        <div class="option" data-q="2" data-a="1">B) Intensity Modulation</div>
-                        <div class="option" data-q="2" data-a="2">C) Refraction</div>
-                        <div class="option" data-q="2" data-a="3">D) Diffraction</div>
+                        <div class="option" data-q="2" data-a="0" tabindex="0">A) Doppler Effect</div>
+                        <div class="option" data-q="2" data-a="1" tabindex="0">B) Intensity Modulation</div>
+                        <div class="option" data-q="2" data-a="2" tabindex="0">C) Refraction</div>
+                        <div class="option" data-q="2" data-a="3" tabindex="0">D) Diffraction</div>
                     </div>
                 </div>
 
@@ -834,10 +921,10 @@
                     <h3>Question 3:</h3>
                     <p>Which application uses laser for internet infrastructure?</p>
                     <div class="options">
-                        <div class="option" data-q="3" data-a="0">A) Bluetooth</div>
-                        <div class="option" data-q="3" data-a="1">B) Wi-Fi</div>
-                        <div class="option" data-q="3" data-a="2">C) Fiber-optic communication</div>
-                        <div class="option" data-q="3" data-a="3">D) Radio waves</div>
+                        <div class="option" data-q="3" data-a="0" tabindex="0">A) Bluetooth</div>
+                        <div class="option" data-q="3" data-a="1" tabindex="0">B) Wi-Fi</div>
+                        <div class="option" data-q="3" data-a="2" tabindex="0">C) Fiber-optic communication</div>
+                        <div class="option" data-q="3" data-a="3" tabindex="0">D) Radio waves</div>
                     </div>
                 </div>
 
@@ -845,10 +932,10 @@
                     <h3>Question 4:</h3>
                     <p>What phenomenon enables photodiodes to work?</p>
                     <div class="options">
-                        <div class="option" data-q="4" data-a="0">A) Photoelectric Effect</div>
-                        <div class="option" data-q="4" data-a="1">B) Compton Effect</div>
-                        <div class="option" data-q="4" data-a="2">C) Zeeman Effect</div>
-                        <div class="option" data-q="4" data-a="3">D) Hall Effect</div>
+                        <div class="option" data-q="4" data-a="0" tabindex="0">A) Photoelectric Effect</div>
+                        <div class="option" data-q="4" data-a="1" tabindex="0">B) Compton Effect</div>
+                        <div class="option" data-q="4" data-a="2" tabindex="0">C) Zeeman Effect</div>
+                        <div class="option" data-q="4" data-a="3" tabindex="0">D) Hall Effect</div>
                     </div>
                 </div>
 
@@ -856,21 +943,33 @@
                     <h3>Question 5:</h3>
                     <p>Why is laser communication more secure?</p>
                     <div class="options">
-                        <div class="option" data-q="5" data-a="0">A) It's cheaper</div>
-                        <div class="option" data-q="5" data-a="1">B) Requires line-of-sight, hard to intercept</div>
-                        <div class="option" data-q="5" data-a="2">C) Uses less power</div>
-                        <div class="option" data-q="5" data-a="3">D) It's slower</div>
+                        <div class="option" data-q="5" data-a="0" tabindex="0">A) It's cheaper</div>
+                        <div class="option" data-q="5" data-a="1" tabindex="0">B) Requires line-of-sight, hard to intercept</div>
+                        <div class="option" data-q="5" data-a="2" tabindex="0">C) Uses less power</div>
+                        <div class="option" data-q="5" data-a="3" tabindex="0">D) It's slower</div>
                     </div>
                 </div>
 
                 <div style="text-align: center;">
-                    <button class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+                    <button class="submit-btn" id="submitQuizBtn">Submit Quiz</button>
                 </div>
 
                 <div class="score-display" id="scoreDisplay"></div>
             </div>
         </div>
     </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-member"><strong>Musab Shaikh</strong> (Roll: 58)</div>
+            <div class="footer-divider"></div>
+            <div class="footer-member"><strong>Shifa Shaikh</strong> (Roll: 59)</div>
+            <div class="footer-divider"></div>
+            <div class="footer-member"><strong>Asad Shaikh</strong> (Roll: 57)</div>
+            <div class="footer-divider"></div>
+            <div class="footer-member"><strong>Tanmay Sindhani</strong> (Roll: 68)</div>
+        </div>
+    </footer>
 
     <script>
         // Background animation
@@ -929,7 +1028,7 @@
 
         animateBackground();
 
-        // Section navigation
+        // Section navigation function
         function showSection(sectionId) {
             document.querySelectorAll('section').forEach(section => {
                 section.classList.remove('active');
@@ -937,6 +1036,21 @@
             document.getElementById(sectionId).classList.add('active');
             window.scrollTo(0, 0);
         }
+
+        // Navigation links event listeners
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+
+        // CTA button event listener
+        document.querySelector('.cta-btn').addEventListener('click', function() {
+            const sectionId = this.getAttribute('data-section');
+            showSection(sectionId);
+        });
 
         // Visualization
         const canvas = document.getElementById('visualCanvas');
@@ -1038,6 +1152,10 @@
             drawVisualization();
         }
 
+        // Control button event listeners
+        document.getElementById('transmitBtn').addEventListener('click', startTransmission);
+        document.getElementById('stopBtn').addEventListener('click', stopTransmission);
+
         // Initial draw
         drawVisualization();
 
@@ -1068,6 +1186,14 @@
                 
                 // Store answer
                 userAnswers[question] = parseInt(answer);
+            });
+
+            // Keyboard support
+            option.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
             });
         });
 
@@ -1125,9 +1251,12 @@
             scoreDisplay.style.display = 'block';
 
             // Disable submit button
-            document.querySelector('.submit-btn').disabled = true;
-            document.querySelector('.submit-btn').style.opacity = '0.5';
+            document.getElementById('submitQuizBtn').disabled = true;
+            document.getElementById('submitQuizBtn').style.opacity = '0.5';
         }
+
+        // Submit quiz button event listener
+        document.getElementById('submitQuizBtn').addEventListener('click', submitQuiz);
 
         // Responsive canvas
         window.addEventListener('resize', () => {
@@ -1142,7 +1271,7 @@
             }
         });
 
-        // GSAP animations on section change
+        // GSAP animations on page load
         document.addEventListener('DOMContentLoaded', () => {
             gsap.from('#home h1', {
                 duration: 1,
@@ -1174,26 +1303,5 @@
             });
         });
     </script>
-
-    <!-- Footer on all pages -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-team">
-                <div class="footer-member">
-                    <strong>Musab Shaikh</strong> | Roll No: 2503158
-                </div>
-                <div class="footer-member">
-                    <strong>Tanmay Sindhani</strong> | Roll No: 2503168
-                </div>
-            </div>
-            
-            <div class="footer-divider"></div>
-            
-            <p class="footer-text">
-                Laser Voice Communication System | FY CSE Project<br>
-                <span class="footer-year">© 2025</span> | Mumbai University
-            </p>
-        </div>
-    </footer>
 </body>
 </html>
